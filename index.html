@@ -44,9 +44,9 @@ textarea:focus{border-color:var(--gold)}
 .stn.on b{background:var(--gold);box-shadow:0 0 12px var(--gold)}
 .stn:not(:last-of-type):before{content:"";position:absolute;right:5px;top:30px;height:44px;width:1px;background:rgba(185,154,94,.3)}
 .stn span{opacity:.3}.stn.on span{opacity:1}
-#bk{position:relative;width:min(86vw,390px);height:min(76dvh,610px);perspective:1600px}
-.pg{position:absolute;inset:0;transform-origin:right center;transition:transform 1s cubic-bezier(.5,.05,.25,1),box-shadow 1s;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:linear-gradient(270deg,#e6d9bb,#f6eddb 7%,#f4ead7);color:#2b1a14;border-radius:3px 9px 9px 3px;box-shadow:0 12px 30px rgba(0,0,0,.55)}
-.pg.f{transform:rotateY(180deg);box-shadow:none}
+#bk{position:relative;width:min(86vw,390px);height:min(76vh,600px);height:min(76dvh,610px);perspective:1600px}
+.pg{position:absolute;inset:0;transform-origin:right center;display:none;transition:transform 1s cubic-bezier(.5,.05,.25,1),opacity .01s .5s;background:linear-gradient(270deg,#e6d9bb,#f6eddb 7%,#f4ead7);color:#2b1a14;border-radius:3px 9px 9px 3px;box-shadow:0 12px 30px rgba(0,0,0,.55)}
+.pg.f{transform:rotateY(180deg);opacity:0}.pg.nt{transition:none}
 .pi{position:absolute;inset:14px;border:1px solid rgba(139,98,60,.45);padding:22px 14px 34px;overflow-y:auto;display:flex;flex-direction:column;align-items:center;text-align:center}
 .pi>div{margin:auto;width:100%}
 .pi .v{font-size:var(--fs);line-height:1.9;color:#2b1a14;max-width:none;margin:0 auto}
@@ -56,6 +56,13 @@ textarea:focus{border-color:var(--gold)}
 .pg.cv .pi{border:1px solid var(--gold);justify-content:center}.pg.cv .pi *{color:var(--gold)!important}
 .ctl{display:flex;gap:10px;align-items:center;justify-content:center;margin-top:16px;width:min(86vw,390px)}
 .ctl .btn{padding:8px 13px;min-height:44px;font-size:15px;white-space:nowrap}.ctl .btn:disabled{visibility:hidden}.ctl .mid{flex:1;text-align:center;font-size:13px;color:var(--rose)}
+.paper{width:100%;max-width:520px;background:linear-gradient(270deg,#e6d9bb,#f6eddb 5%,#f4ead7);color:#2b1a14;border-radius:4px;box-shadow:0 12px 34px rgba(0,0,0,.55);padding:14px;flex:none}
+.paper>div{border:1px solid rgba(139,98,60,.45);padding:34px 16px 46px;text-align:center}
+.paper .v{font-size:var(--fs);line-height:2;color:#2b1a14;max-width:none;margin:0 auto}
+.paper .ch{font-family:Amiri,'Noto Naskh Arabic',serif;font-size:calc(var(--fs) + 9px);color:#5b1628;line-height:1.7}
+.paper .chh{margin:46px 0 10px}.paper .ch2{font-family:Amiri,'Noto Naskh Arabic',serif;font-size:calc(var(--fs) + 5px);color:#5b1628;line-height:1.8}
+.paper .lab{color:#8a6a4a}.paper .bay{margin:16px 0}
+.paper .sig{margin-top:60px;padding-top:34px;border-top:1px solid rgba(139,98,60,.35)}
 @media(prefers-reduced-motion:reduce){*{animation-duration:.01s!important;animation-delay:0s!important;transition-duration:.01s!important}}
 </style></head><body>
 <div class="glow"></div><div id="bar"></div>
@@ -100,21 +107,14 @@ function confess(){cur=8;dots();const ta=el("textarea");ta.id="ta";ta.placeholde
  show(sc(rv("لقد رويتُ لكِ حكايتي، ووضعتُ بين يديكِ بعضًا من ذاتي...","sub",0.5),rv("والآن، جاء دوركِ...","v",3),rv("أريد أن أسمع حكايتكِ أنتِ.","sub",5),box,row))}
 function gentle(){show(sc(rv("لا بأس إن لم تجدي الكلمات الآن... بعض المشاعر تحتاج وقتًا كي تُقال.","v",0.5),(()=>{const r=el("div","row");r.append(lnk("للتواصل عبر ماسنجر",CFG.messenger,3),btn("العودة إلى الرحلة",()=>go(1),"q",3.4),btn("إنهاء",home,"q",3.8));return r})()))}
 function bookIntro(){show(sc(rv("لقد وصلتِ إلى الفصل الأخير...","v",0.5),rv("لكن الحكاية لم تكن كاملة حتى تقرئيها كلها.","sub",3),btn("افتحي الكتاب",openBook,"",6)))}
-function openBook(){cur=8;dots();const pages=[];
- const mk=(cls,f)=>{const p=el("div","pg "+cls),i=el("div","pi"),w=el("div");f(w);i.append(w);p.append(i);pages.push(p)};
- mk("cv",w=>{w.append(el("div","ch","كأنكِ بعض الطمأنينة"))});
- P.forEach((c,ci)=>{for(let k=0,n;k<c.b.length;k+=n){n=k?3:2;const g=c.b.slice(k,k+n),fs=!k;mk("",w=>{if(fs){w.append(el("div","lab","الفصل "+ORD[ci]),el("div","ch",c.t))}g.forEach(b=>{const y=el("div","bay");b.forEach(l=>y.append(el("div","v",l)));w.append(y)})})}});
- mk("",w=>{w.append(el("div","v","إلى التي تشبه الطمأنينة..."),el("div","ch","عبدالله"))});
- const N=pages.length,bk=el("div");bk.id="bk";bk.append(...pages);let i=0;
- pages.forEach((p,k)=>{if(k&&k<N-1){const n=el("div","pn",String(k));p.append(n)}});
- const pv=btn("→ السابق",()=>t(-1)),nx=btn("التالي ←",()=>t(1)),mid=el("div","mid");
- const zm=(d)=>{const v=Math.min(32,Math.max(17,parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--fs"))+d));document.documentElement.style.setProperty("--fs",v+"px")};
- const ctl=el("div","ctl");ctl.append(pv,btn("أ-",()=>zm(-2),"q"),mid,btn("أ+",()=>zm(2),"q"),nx);
- function z(){pages.forEach((p,k)=>{p.style.zIndex=k<i?N+k:N-k});pv.disabled=i==0;mid.textContent=i?i+" / "+(N-1):"";nx.textContent=i==N-1?"تابعي ←":"التالي ←"}
- function t(d){if(d>0){if(i==N-1)return fin();pages[i].classList.add("f");i++}else if(i>0){i--;pages[i].classList.remove("f")}z()}
- let x0=null;bk.addEventListener("touchstart",e=>{x0=e.touches[0].clientX},{passive:true});bk.addEventListener("touchend",e=>{if(x0==null)return;const d=e.changedTouches[0].clientX-x0;x0=null;if(Math.abs(d)>45)t(d>0?1:-1)});
- document.onkeydown=e=>{if(e.key=="ArrowLeft")t(1);if(e.key=="ArrowRight")t(-1)};
- z();const s=sc(bk,ctl);s.style.paddingTop="60px";show(s)}
+function openBook(){cur=8;dots();$("bar").style.opacity=0;document.onkeydown=null;
+ const w=el("div");w.append(el("div","ch","كأنكِ بعضُ الطمأنينة"));
+ P.forEach((c,ci)=>{const h=el("div","chh");h.append(el("div","lab","الفصل "+ORD[ci]),el("div","ch2",c.t));w.append(h);c.b.forEach(b=>{const y=el("div","bay");b.forEach(l=>y.append(el("div","v",l)));w.append(y)})});
+ const sg=el("div","sig");sg.append(el("div","v","إلى التي تشبه الطمأنينة..."),el("div","ch","عبدالله"));w.append(sg);
+ const pp=el("div","paper");pp.append(w);
+ const zm=d=>{const v=Math.min(32,Math.max(17,parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--fs"))+d));document.documentElement.style.setProperty("--fs",v+"px")};
+ const ctl=el("div","ctl");ctl.append(btn("أ-",()=>zm(-2),"q"),btn("أ+",()=>zm(2),"q"));
+ const s=sc(ctl,pp,btn("تابعي",fin));s.style.padding="70px 12px 44px";show(s)}
 function fin(){document.onkeydown=null;show(sc(rv("هناك شيء لم أقله بعد...","v",0.8),lnk("لنتحدث قليلًا",CFG.messenger,3)))}
 /* map */
 $("mp").onclick=()=>{const m=$("map");m.replaceChildren();ST.forEach(([n,k])=>{const r=el("div","stn"+(cur>=k?" on":""));r.append(el("b"),el("span","",cur>=k?n:"· · ·"));m.append(r)});m.classList.add("on");m.onclick=()=>m.classList.remove("on")};
